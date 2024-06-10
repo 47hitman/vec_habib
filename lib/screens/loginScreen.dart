@@ -1,7 +1,11 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+
+import '../services.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -23,8 +27,21 @@ class _LoginScreenState extends State<LoginScreen> {
   void _doSomething() async {
     if (formKey.currentState!.validate()) {
       // Perform login action
-      setState(() {
+      setState(() async {
+        // await ApiService.instance
+        //     .login(phoneController.text, passwordController.text, "62");
+        String? token = await ApiService.instance
+            .login(phoneController.text, passwordController.text, "62");
+
+        if (token != null) {
+          // print('Login successful. Token: $token');
+          // You can now use the token for authenticated requests
+        } else {
+          // print('Login failed');
+        }
         _btnController.success();
+        print("nice");
+        _btnController.reset();
       });
     } else {
       _btnController.reset();
