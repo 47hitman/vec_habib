@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:vec_habib/screens/loginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
@@ -33,11 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
   // }
 
   removeScreen() {
-    return _timer = Timer(const Duration(seconds: 1), () {
-      //   Navigator.pushReplacement(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (BuildContext context) => const MenuScreen()));
+    return _timer = Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginScreen()));
     });
   }
 
