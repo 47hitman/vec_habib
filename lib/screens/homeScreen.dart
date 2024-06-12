@@ -1,11 +1,9 @@
+// ignore_for_file: camel_case_types, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 import 'package:vec_habib/screens/webview.dart';
-
-var list;
 
 class homeScreen extends StatefulWidget {
   static const String id = "homeScreen";

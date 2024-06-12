@@ -1,10 +1,8 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, library_private_types_in_public_api
 
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vec_habib/screens/loginScreen.dart';
-
-import 'menu.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
@@ -87,21 +85,19 @@ class _SplashScreenState extends State<SplashScreen> {
               )
             ],
           ),
-          Column(
+          const Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                child: const Padding(
-                  padding: EdgeInsets.only(bottom: 40),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Ver 18.1.20",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      )),
-                ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 40),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      "Ver 18.1.20",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    )),
               )
             ],
           )
