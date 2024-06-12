@@ -1,10 +1,7 @@
-// ignore_for_file: unused_local_variable
-
-import 'dart:developer';
+// ignore_for_file: unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-
 import '../services.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,26 +23,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _doSomething() async {
     if (formKey.currentState!.validate()) {
-      // Perform login action
-      setState(() async {
-        // await ApiService.instance
-        //     .login(phoneController.text, passwordController.text, "62");
-        String? token = await ApiService.instance
-            .login(phoneController.text, passwordController.text, "62");
-
-        if (token != null) {
-          // print('Login successful. Token: $token');
-          // You can now use the token for authenticated requests
-        } else {
-          // print('Login failed');
-        }
-        _btnController.success();
-        print("nice");
-        _btnController.reset();
+      setState(() {
+        _btnController.start();
       });
-    } else {
-      _btnController.reset();
+
+      String? token = await ApiService.instance
+          .login(phoneController.text, passwordController.text, "62");
+
+      setState(() {
+        _btnController.stop();
+      });
+
+      if (token != null) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const LoginScreen()));
+        // print('Login successful. Token: $token');
+
+        // You can now use the token for authenticated requests
+      } else {
+        _showErrorDialog('Login failed');
+      }
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -130,17 +150,24 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           SizedBox(
             width: double.infinity,
-            height: double.infinity,
+            height: MediaQuery.of(context).size.width * 0.9,
             child: Stack(alignment: Alignment.center, children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                padding: const EdgeInsets.only(bottom: 70),
-                child: const Image(
-                  width: 200,
-                  image: AssetImage(
-                    "assets/icon2.png",
-                  ),
+              Transform.translate(
+                offset: const Offset(0.0, 150.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 100,
+                      width: 100,
+                      padding: const EdgeInsets.all(10),
+                      child: const Image(
+                        width: 100,
+                        image: AssetImage(
+                          "assets/icon.png",
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ]),
