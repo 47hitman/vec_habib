@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:vec_habib/screens/loginScreen.dart';
 
 import '../services.dart';
 import '../token_porvider.dart';
@@ -35,7 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const LoginScreen()));
               await _logout();
             },
             child: const Text('Logout'),

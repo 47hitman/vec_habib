@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // serverApi.instance.player();
     removeScreen();
   }
 
