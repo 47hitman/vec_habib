@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class ApiService {
   ApiService._privateConstructor();
   static final ApiService instance = ApiService._privateConstructor();
-  final Dio _dio = Dio(BaseOptions(
+  final Dio dio = Dio(BaseOptions(
     baseUrl: 'http://develop-at.vesperia.id:1091',
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 3),
@@ -13,7 +13,7 @@ class ApiService {
   Future<String?> login(
       String phoneNumber, String password, String countryCode) async {
     try {
-      final response = await _dio.post('/api/v1/sign-in', data: {
+      final response = await dio.post('/api/v1/sign-in', data: {
         'phone_number': phoneNumber,
         'password': password,
         'country_code': countryCode,
@@ -34,7 +34,7 @@ class ApiService {
   // Example method to get user details
   Future<Map<String, dynamic>?> getUserDetails(String token) async {
     try {
-      final response = await _dio.get('/api/v1/user',
+      final response = await dio.get('/api/v1/user',
           options: Options(
             headers: {
               'Authorization': 'Bearer $token',

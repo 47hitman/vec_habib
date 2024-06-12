@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 var list;
 
 class homeScreen extends StatefulWidget {
-  static const String id = "galeryScreen";
+  static const String id = "homeScreen";
 
   const homeScreen({super.key});
 
@@ -54,74 +54,72 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('tweet'),
-      ),
-      // body: list.isEmpty
-      //     ? const Center(
-      //         // Tampilkan pesan jika galeri kosong
-      //         child: Text('Galeri kosong'),
-      //       )
-      //     : ListView.builder(
-      //         itemCount: list.length,
-      //         itemBuilder: (context, index) {
-      //           // Mengambil URL gambar dari data galeri
-      //           String imageUrl = list[index]['url'];
-      //           return Padding(
-      //               padding: const EdgeInsets.all(8.0),
-      //               child: Column(
-      //                 children: [
-      //                   Row(
-      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                     children: [
-      //                       Row(
-      //                         children: [
-      //                           Text(
-      //                             list[index]['firstName'],
-      //                             style: const TextStyle(
-      //                                 fontWeight: FontWeight.bold),
-      //                           ),
-      //                           const SizedBox(
-      //                             width: 5,
-      //                           ),
-      //                           Text(
-      //                             list[index]['lastName'],
-      //                             style: const TextStyle(
-      //                                 fontWeight: FontWeight.bold),
-      //                           ),
-      //                         ],
-      //                       ),
-      //                       Text(
-      //                         formatDate(list[index]['date']),
-      //                         style:
-      //                             const TextStyle(fontWeight: FontWeight.bold),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   Row(
-      //                     children: [
-      //                       Text(
-      //                         list[index]['message'],
-      //                         style:
-      //                             const TextStyle(fontWeight: FontWeight.bold),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   const SizedBox(
-      //                     height: 10,
-      //                   ),
-      //                   imageUrl != ""
-      //                       ? Image.network(
-      //                           imageUrl,
-      //                           fit: BoxFit
-      //                               .cover, // Agar gambar memenuhi ruang yang tersedia
-      //                         )
-      //                       : Container()
-      //                 ],
-      //               ));
-      //         },
-      //       ),
-    );
+    return const Scaffold(
+
+        // body: list.isEmpty
+        //     ? const Center(
+        //         // Tampilkan pesan jika galeri kosong
+        //         child: Text('Galeri kosong'),
+        //       )
+        //     : ListView.builder(
+        //         itemCount: list.length,
+        //         itemBuilder: (context, index) {
+        //           // Mengambil URL gambar dari data galeri
+        //           String imageUrl = list[index]['url'];
+        //           return Padding(
+        //               padding: const EdgeInsets.all(8.0),
+        //               child: Column(
+        //                 children: [
+        //                   Row(
+        //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                     children: [
+        //                       Row(
+        //                         children: [
+        //                           Text(
+        //                             list[index]['firstName'],
+        //                             style: const TextStyle(
+        //                                 fontWeight: FontWeight.bold),
+        //                           ),
+        //                           const SizedBox(
+        //                             width: 5,
+        //                           ),
+        //                           Text(
+        //                             list[index]['lastName'],
+        //                             style: const TextStyle(
+        //                                 fontWeight: FontWeight.bold),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                       Text(
+        //                         formatDate(list[index]['date']),
+        //                         style:
+        //                             const TextStyle(fontWeight: FontWeight.bold),
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   Row(
+        //                     children: [
+        //                       Text(
+        //                         list[index]['message'],
+        //                         style:
+        //                             const TextStyle(fontWeight: FontWeight.bold),
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   const SizedBox(
+        //                     height: 10,
+        //                   ),
+        //                   imageUrl != ""
+        //                       ? Image.network(
+        //                           imageUrl,
+        //                           fit: BoxFit
+        //                               .cover, // Agar gambar memenuhi ruang yang tersedia
+        //                         )
+        //                       : Container()
+        //                 ],
+        //               ));
+        //         },
+        //       ),
+        );
   }
 }

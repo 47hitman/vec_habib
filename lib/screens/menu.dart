@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vec_habib/screens/homeScreen.dart';
+import 'package:vec_habib/screens/profileScreen.dart';
 
 class MenuScreen extends StatefulWidget {
   static const String id = "MenuScreen";
@@ -13,7 +15,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   // Updated widget options list to include HomeScreen
   final List<Widget> _widgetOptions = <Widget>[
-    const HomeScreens(),
+    const homeScreen(),
+    const ProfileScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -36,13 +39,13 @@ class _MenuScreenState extends State<MenuScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.browse_gallery),
-            label: 'Galery',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note),
-            label: 'tweet',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.note),
+          //   label: 'tweet',
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],

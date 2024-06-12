@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:vec_habib/screens/homeScreen.dart';
+import 'package:vec_habib/screens/menu.dart';
 import '../services.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,23 +29,35 @@ class _LoginScreenState extends State<LoginScreen> {
         _btnController.start();
       });
 
-      String? token = await ApiService.instance
-          .login(phoneController.text, passwordController.text, "62");
+      try {
+        print('Attempting to log in...');
+        String? token = await ApiService.instance
+            .login(phoneController.text, passwordController.text, "62");
 
-      setState(() {
-        _btnController.stop();
-      });
+        setState(() {
+          _btnController.stop();
+        });
 
-      if (token != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const LoginScreen()));
-        // print('Login successful. Token: $token');
+        if (token != null) {
+          // print('Login successful. Token: $token');
+          // You can now use the token for authenticated requests
 
-        // You can now use the token for authenticated requests
-      } else {
-        _showErrorDialog('Login failed');
+          // Uncomment and modify the below line to navigate to a different screen
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const MenuScreen()));
+        } else {
+          // print('Login failed. No token received.');
+          // Uncomment the below line to show an error dialog
+          _showErrorDialog('Login failed');
+        }
+      } catch (e) {
+        // print('Error during login: $e');
+        setState(() {
+          _btnController.stop();
+        });
+        // _showErrorDialog('An error occurred: $e');
       }
     }
   }
@@ -103,9 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       validator: (value) {
         if (value == null || value.isEmpty) {
+          _btnController.stop();
           return 'Mohon diisi menggunakan Password yang valid';
         }
         if (value.length < 8) {
+          _btnController.stop();
           return 'Password must be at least 8 characters long';
         }
         return null;
