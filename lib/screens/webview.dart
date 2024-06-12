@@ -15,7 +15,7 @@ class WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Privacy Policy',
+      title: 'Webview',
       home: Scaffold(
         appBar: AppBar(
           flexibleSpace: FlexibleSpaceBar(
@@ -24,8 +24,8 @@ class WebViewPageState extends State<WebViewPage> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFF13AAD4),
-                    Color(0xFF01579B),
+                    Color.fromARGB(255, 186, 212, 19),
+                    Color.fromARGB(255, 172, 113, 37),
                   ],
                 ),
               ),
@@ -35,11 +35,11 @@ class WebViewPageState extends State<WebViewPage> {
           leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.arrow_back)),
-          title: const Text("Privacy Policy"),
+          title: const Text("Webview"),
         ),
         body: Stack(children: <Widget>[
           WebView(
-            initialUrl: "https://github.com/qbcore-framework/qb-spawn",
+            initialUrl: "https://www.youtube.com/watch?v=lpnKWK-KEYs",
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

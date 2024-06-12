@@ -16,7 +16,8 @@ class _MenuScreenState extends State<MenuScreen> {
   // Updated widget options list to include HomeScreen
   final List<Widget> _widgetOptions = <Widget>[
     const homeScreen(),
-    const ProfileScreen()
+    const ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,13 +43,13 @@ class _MenuScreenState extends State<MenuScreen> {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.note),
-          //   label: 'tweet',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.note),
+            label: 'Product List',
+          ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color.fromARGB(255, 186, 212, 19),
         onTap: _onItemTapped,
       ),
     );

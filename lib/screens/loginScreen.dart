@@ -1,10 +1,12 @@
 // ignore_for_file: unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:vec_habib/screens/homeScreen.dart';
 import 'package:vec_habib/screens/menu.dart';
 import '../services.dart';
+import '../token_porvider.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -30,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try {
-        print('Attempting to log in...');
+        // print('Attempting to log in...');
         String? token = await ApiService.instance
             .login(phoneController.text, passwordController.text, "62");
 
@@ -39,17 +41,16 @@ class _LoginScreenState extends State<LoginScreen> {
         });
 
         if (token != null) {
-          // print('Login successful. Token: $token');
-          // You can now use the token for authenticated requests
+          // Save the token using Provider
+          Provider.of<TokenProvider>(context, listen: false).setToken(token);
 
-          // Uncomment and modify the below line to navigate to a different screen
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => const MenuScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const MenuScreen(),
+            ),
+          );
         } else {
-          // print('Login failed. No token received.');
-          // Uncomment the below line to show an error dialog
           _showErrorDialog('Login failed');
         }
       } catch (e) {
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _btnController.stop();
         });
-        // _showErrorDialog('An error occurred: $e');
+        _showErrorDialog('An error occurred: $e');
       }
     }
   }

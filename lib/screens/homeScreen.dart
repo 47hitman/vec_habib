@@ -72,9 +72,6 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Download File Example'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +103,7 @@ class _homeScreenState extends State<homeScreen> {
                   MaterialPageRoute(builder: (context) => const WebViewPage()),
                 );
               },
-              child: const Text('Open YouTube'),
+              child: const Text('Open Webview'),
             ),
           ],
         ),
