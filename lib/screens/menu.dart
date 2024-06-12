@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vec_habib/screens/homeScreen.dart';
+import 'package:vec_habib/screens/productlistScreen.dart';
 import 'package:vec_habib/screens/profileScreen.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _MenuScreenState extends State<MenuScreen> {
   final List<Widget> _widgetOptions = <Widget>[
     const homeScreen(),
     const ProfileScreen(),
-    const ProfileScreen(),
+    const ProductListPage(),
   ];
 
   void _onItemTapped(int index) {

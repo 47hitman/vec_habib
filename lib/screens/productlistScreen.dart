@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart';
+
+import '../token_porvider.dart';
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage({super.key});
@@ -14,6 +17,7 @@ class _ProductListPageState extends State<ProductListPage> {
   bool isLoadingMore = false;
   int page = 1;
   final ScrollController _scrollController = ScrollController();
+  final String baseUrl = 'http://develop-at.vesperia.id:1091/api/v1/product';
 
   @override
   void initState() {
@@ -30,7 +34,8 @@ class _ProductListPageState extends State<ProductListPage> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+            _scrollController.position.maxScrollExtent &&
+        !isLoadingMore) {
       fetchMoreProducts();
     }
   }
@@ -41,12 +46,29 @@ class _ProductListPageState extends State<ProductListPage> {
     });
 
     try {
-      final response =
-          await Dio().get('https://api.example.com/products?page=$page');
-      setState(() {
-        products = response.data['products'];
-        isLoading = false;
-      });
+      final token = Provider.of<TokenProvider>(context, listen: false).token;
+      if (token!.isNotEmpty) {
+        final response = await Dio().get(
+          '$baseUrl?limit=10&page=$page',
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Accept': 'application/json',
+            },
+          ),
+        );
+        setState(() {
+          products = response.data['data'] ?? [];
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Token is not available')),
+        );
+      }
     } catch (e) {
       setState(() {
         isLoading = false;
@@ -65,13 +87,30 @@ class _ProductListPageState extends State<ProductListPage> {
     });
 
     try {
-      final response =
-          await Dio().get('https://api.example.com/products?page=${page + 1}');
-      setState(() {
-        products.addAll(response.data['products']);
-        page++;
-        isLoadingMore = false;
-      });
+      final token = Provider.of<TokenProvider>(context, listen: false).token;
+      if (token!.isNotEmpty) {
+        final response = await Dio().get(
+          '$baseUrl?limit=10&page=${page + 1}',
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Accept': 'application/json',
+            },
+          ),
+        );
+        setState(() {
+          products.addAll(response.data['data'] ?? []);
+          page++;
+          isLoadingMore = false;
+        });
+      } else {
+        setState(() {
+          isLoadingMore = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Token is not available')),
+        );
+      }
     } catch (e) {
       setState(() {
         isLoadingMore = false;
@@ -86,7 +125,21 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product List'),
+        flexibleSpace: FlexibleSpaceBar(
+          background: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 186, 212, 19),
+                  Color.fromARGB(255, 172, 113, 37),
+                ],
+              ),
+            ),
+          ),
+        ),
+        centerTitle: true,
+        title: const Text("Poduct List"),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -99,9 +152,39 @@ class _ProductListPageState extends State<ProductListPage> {
                 }
 
                 final product = products[index];
-                return ListTile(
-                  title: Text(product['name']),
-                  subtitle: Text(product['description']),
+                final productName = product['name'] ?? 'No name';
+                final productDescription =
+                    product['description'] ?? 'No description';
+                final productImage = product['images'].isNotEmpty
+                    ? product['images'][0]['url']
+                    : 'https://via.placeholder.com/150';
+
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    leading: Image.network(
+                      productImage,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(
+                      productName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      productDescription,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
                 );
               },
             ),
