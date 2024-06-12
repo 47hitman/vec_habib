@@ -31,6 +31,29 @@ class ApiService {
     }
   }
 
+  Future<void> logout(String token) async {
+    try {
+      final response = await dio.post(
+        '/api/v1/sign-out',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        // Logout successful
+        print('Logout successful');
+      } else {
+        // Handle logout failure
+        print('Logout failed');
+      }
+    } catch (e) {
+      // Handle error
+      print('Error during logout: $e');
+    }
+  }
+
   // Example method to get user details
   Future<Map<String, dynamic>?> getUserDetails(String token) async {
     try {

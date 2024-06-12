@@ -17,6 +17,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   final Dio _dio = ApiService.instance.dio;
   bool _isLoading = false;
+  void _showLogoutConfirmationDialog(String token) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await _logout(token);
+            },
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Function to logout user
+  Future<void> _logout(String token) async {
+    try {
+      await ApiService.instance.logout(token);
+      // Navigate to login screen or perform other actions after logout
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
+  }
 
   void _updateProfile() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
@@ -122,6 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: _isLoading
                     ? const CircularProgressIndicator()
                     : const Text('Update Profile'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // _showLogoutConfirmationDialog(token);
+                },
+                child: const Text('Logout'),
               ),
             ],
           ),

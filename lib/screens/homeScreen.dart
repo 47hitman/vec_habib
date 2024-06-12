@@ -1,7 +1,9 @@
-// import 'package:cuaca/service/globals.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-// import 'package:cuaca/service/serverApi.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
+import 'package:vec_habib/screens/webview.dart';
 
 var list;
 
@@ -15,111 +17,106 @@ class homeScreen extends StatefulWidget {
 }
 
 class _homeScreenState extends State<homeScreen> {
+  bool downloading = false;
+  String progressString = "";
+
   @override
   void initState() {
     super.initState();
-    // tweets();
-    // serverApi.instance.playerGalery(players[0]["citizenid"]);
   }
 
-  // Future<List<dynamic>> tweets() async {
-  //   final http.Response response = await http.get(
-  //     Uri.parse("${BaseURL.apiAddress}/phone_tweets"),
-  //   );
+  Future<void> downloadFile() async {
+    Dio dio = Dio();
+    try {
+      var dir = await getApplicationDocumentsDirectory();
 
-  //   if (response.statusCode == 200) {
-  //     list = json.decode(response.body);
-  //     print(list);
-  //     return [response.body];
-  //   } else {
-  //     return [];
-  //   }
-  // }
+      setState(() {
+        downloading = true;
+      });
 
-  String formatDate(String dateString) {
-    DateTime date = DateTime.parse(dateString);
+      await dio.download(
+        'https://www.tutorialspoint.com/flutter/flutter_tutorial.pdf',
+        "${dir.path}/flutter_tutorial.pdf",
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            setState(() {
+              progressString =
+                  "${((received / total) * 100).toStringAsFixed(0)}%";
+            });
+          }
+        },
+      );
 
-    Duration difference = DateTime.now().difference(date);
+      setState(() {
+        downloading = false;
+        progressString = "Completed";
+      });
 
-    if (difference.inDays > 0) {
-      return '${difference.inDays} days ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} hours ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minutes ago';
-    } else {
-      return 'Just now';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Download Completed! File saved to ${dir.path}/flutter_tutorial.pdf')),
+      );
+    } catch (e) {
+      setState(() {
+        downloading = false;
+        progressString = "Failed";
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download Failed: $e')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-
-        // body: list.isEmpty
-        //     ? const Center(
-        //         // Tampilkan pesan jika galeri kosong
-        //         child: Text('Galeri kosong'),
-        //       )
-        //     : ListView.builder(
-        //         itemCount: list.length,
-        //         itemBuilder: (context, index) {
-        //           // Mengambil URL gambar dari data galeri
-        //           String imageUrl = list[index]['url'];
-        //           return Padding(
-        //               padding: const EdgeInsets.all(8.0),
-        //               child: Column(
-        //                 children: [
-        //                   Row(
-        //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                     children: [
-        //                       Row(
-        //                         children: [
-        //                           Text(
-        //                             list[index]['firstName'],
-        //                             style: const TextStyle(
-        //                                 fontWeight: FontWeight.bold),
-        //                           ),
-        //                           const SizedBox(
-        //                             width: 5,
-        //                           ),
-        //                           Text(
-        //                             list[index]['lastName'],
-        //                             style: const TextStyle(
-        //                                 fontWeight: FontWeight.bold),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                       Text(
-        //                         formatDate(list[index]['date']),
-        //                         style:
-        //                             const TextStyle(fontWeight: FontWeight.bold),
-        //                       ),
-        //                     ],
-        //                   ),
-        //                   Row(
-        //                     children: [
-        //                       Text(
-        //                         list[index]['message'],
-        //                         style:
-        //                             const TextStyle(fontWeight: FontWeight.bold),
-        //                       ),
-        //                     ],
-        //                   ),
-        //                   const SizedBox(
-        //                     height: 10,
-        //                   ),
-        //                   imageUrl != ""
-        //                       ? Image.network(
-        //                           imageUrl,
-        //                           fit: BoxFit
-        //                               .cover, // Agar gambar memenuhi ruang yang tersedia
-        //                         )
-        //                       : Container()
-        //                 ],
-        //               ));
-        //         },
-        //       ),
-        );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Download File Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            downloading
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'Downloading File: $progressString',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
+                  )
+                : ElevatedButton(
+                    onPressed: downloadFile,
+                    child: const Text('Download File'),
+                  ),
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WebViewPage()),
+                );
+              },
+              child: const Text('Open YouTube'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: homeScreen(),
+  ));
 }
