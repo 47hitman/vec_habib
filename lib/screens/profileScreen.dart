@@ -56,10 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       await ApiService.instance.logout(token!);
       Provider.of<TokenProvider>(context, listen: false).clearToken();
-      // Navigate to login screen or perform other actions after logout
     } catch (e) {
       print('Error: $e');
-      // Handle error
     }
   }
 

@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'vec_habib',
-      theme: ThemeData(
-        primaryColor: const Color(0xFF13AAD4),
-        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF13AAD4)),
-      ),
+      // theme: ThemeData(
+      //   primaryColor: const Color(0xFF13AAD4),
+      //   appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF13AAD4)),
+      // ),
       initialRoute: SplashScreen.id,
       routes: {
         // MenuScreen.id: (context) => const MenuScreen(),

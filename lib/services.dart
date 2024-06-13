@@ -9,7 +9,6 @@ class ApiService {
     receiveTimeout: const Duration(seconds: 3),
   ));
 
-  // Login request
   Future<String?> login(
       String phoneNumber, String password, String countryCode) async {
     try {
@@ -42,19 +41,15 @@ class ApiService {
         ),
       );
       if (response.statusCode == 200) {
-        // Logout successful
         print('Logout successful');
       } else {
-        // Handle logout failure
         print('Logout failed');
       }
     } catch (e) {
-      // Handle error
       print('Error during logout: $e');
     }
   }
 
-  // Example method to get user details
   Future<Map<String, dynamic>?> getUserDetails(String token) async {
     try {
       final response = await dio.get('/api/v1/user',
@@ -69,6 +64,4 @@ class ApiService {
       return null;
     }
   }
-
-  // Add more methods for other API requests as needed
 }
